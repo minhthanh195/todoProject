@@ -4,7 +4,6 @@ import dayjs from "../lib/dayjs";
 import { useState } from "react";
 import {
   TrashIcon,
-  CalendarIcon,
   PencilIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/solid";
