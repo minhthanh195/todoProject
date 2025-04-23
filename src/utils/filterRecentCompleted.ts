@@ -6,7 +6,7 @@ export function filterRecentCompleted(todos: Todo[]): Todo[] {
     if (!todo.completed) return true;
     if (!todo.completedAt) return true;
 
-    let dayPassed = dayjs().diff(dayjs(todo.completedAt), "day");
+    const dayPassed = dayjs().diff(dayjs(todo.completedAt), "day");
     return dayPassed <= 3;
   });
 }
