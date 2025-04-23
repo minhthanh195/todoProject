@@ -35,7 +35,6 @@ export default function Home() {
     todos,
     deletedTodos,
     loading,
-    error,
     addTodo,
     toggleCompleted,
     deleteTodo,
