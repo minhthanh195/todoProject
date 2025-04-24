@@ -23,7 +23,7 @@ import { filterRecentCompleted } from "../utils/filterRecentCompleted";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function Home() {
-  const [groupSavedLoad] = useLocalStorage('group','Personal')
+  const [groupSavedLoad,setGroupSavedLoad] = useLocalStorage('group','Personal')
   const [currentGroup, setCurrentGroup] = useState(groupSavedLoad);
   const [newTodo, setNewTodo] = useState("");
   const [newTags, setNewTags] = useState("");
@@ -43,7 +43,6 @@ export default function Home() {
     editTodo,
     clearCompleted,
     undoLastDelete,
-    groupSaved,
   } = useTodoManager(currentGroup);
 
   const { isDark, toggleDark, isReady } = useDarkMode();
@@ -62,7 +61,7 @@ export default function Home() {
       text: "Học tập",
     },
     {
-      key: "Diff",
+      key: "Other",
       text: "Khác",
     },
   ];
@@ -104,8 +103,11 @@ export default function Home() {
   useEffect(() => {
     const saved = localStorage.getItem("recent-searches");
     if (saved) setRecentSearches(JSON.parse(saved));
-    setCurrentGroup(groupSaved)
   }, []);
+
+  useEffect(() => {
+    setGroupSavedLoad(currentGroup)
+  }, [currentGroup]);
 
   useEffect(() => {
     if (!debouncedSearchTerm.trim()) return;
