@@ -20,9 +20,11 @@ import { useTodoManager } from "@/hooks/useTodoManager";
 import TodoItem from "../components/TodoItem";
 import ConfirmDialog from "@/components/ConfirmDialog";
 import { filterRecentCompleted } from "../utils/filterRecentCompleted";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function Home() {
-  const [currentGroup, setCurrentGroup] = useState("Personal");
+  const [groupSavedLoad] = useLocalStorage('group','Personal')
+  const [currentGroup, setCurrentGroup] = useState(groupSavedLoad);
   const [newTodo, setNewTodo] = useState("");
   const [newTags, setNewTags] = useState("");
   const [newDeadline, setNewDeadline] = useState("");
@@ -41,7 +43,7 @@ export default function Home() {
     editTodo,
     clearCompleted,
     undoLastDelete,
-    dataGroup
+    groupSaved,
   } = useTodoManager(currentGroup);
 
   const { isDark, toggleDark, isReady } = useDarkMode();
@@ -68,6 +70,7 @@ export default function Home() {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewTodo(e.target.value);
   };
+  
   const handleAddTodo = async (e: FormEvent) => {
     e.preventDefault();
     if (newTodo.trim() === "") return;
@@ -76,7 +79,6 @@ export default function Home() {
       .split(",")
       .map((t) => t.trim())
       .filter(Boolean);
-    // console.log('khi dua len',tags);
 
     const newItem: Todo = {
       id: Date.now(),
@@ -102,7 +104,7 @@ export default function Home() {
   useEffect(() => {
     const saved = localStorage.getItem("recent-searches");
     if (saved) setRecentSearches(JSON.parse(saved));
-    if(dataGroup) setCurrentGroup(dataGroup);
+    setCurrentGroup(groupSaved)
   }, []);
 
   useEffect(() => {
@@ -134,7 +136,7 @@ export default function Home() {
       <main className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
         <div className="w-full max-w-xl bg-white dark:bg-gray-800 shadow rounded-xl p-6">
           <div className="flex justify-end mb-4">
-            <button
+          <button 
               onClick={toggleDark}
               className="flex gap-[3px] text-sm text-stone-950 dark:text-stone-50 hover:underline cursor-pointer"
             >
